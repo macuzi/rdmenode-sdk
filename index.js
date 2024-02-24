@@ -3,6 +3,7 @@ const readme = require("readmeio");
 
 const app = express();
 const port = process.env.PORT || 8000;
+const fortune = require("./lib/fortune");
 
 require("dotenv").config();
 
@@ -12,7 +13,7 @@ if (!process.env.README_API_KEY) {
 }
 
 app.use((req, res, next) => {
-  readme.log(process.env.README_API_KEY, req, res, groupFn, opts, {
+  readme.log(process.env.README_API_KEY, req, res, {
     apiKey: "owlbert-api-key",
     label: "Owlbert",
     email: "owlbert@example.com",
@@ -28,16 +29,26 @@ app.post("/", express.json(), (req, res) => {
   res.status(200).send();
 });
 
+app.get("/page/fortune", (req, res) => {
+  res.json({ fortune: fortune.getFortune() });
+});
+
 app.post(
   "/webhook",
   express.json({ type: "application/json" }),
-  (async) => (req, res) => {
+  () => (req, res) => {
     const signature = req.headers["readme-signature"];
+    console.log(signature);
     try {
       readme.verifyWebhook(req.body, signature, process.env.SECRET);
     } catch (e) {
       return res.status(401).json({ error: e.message });
     }
+
+    return res.json({
+      petsore_auth: "default-key",
+      basic_auth: { user: "user", pass: "pass" },
+    });
   }
 );
 
