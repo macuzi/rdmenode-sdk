@@ -33,24 +33,20 @@ app.get("/page/fortune", (req, res) => {
   res.json({ fortune: fortune.getFortune() });
 });
 
-app.post(
-  "/webhook",
-  express.json({ type: "application/json" }),
-  () => (req, res) => {
-    const signature = req.headers["readme-signature"];
-    console.log(signature);
-    try {
-      readme.verifyWebhook(req.body, signature, process.env.SECRET);
-    } catch (e) {
-      return res.status(401).json({ error: e.message });
-    }
-
-    return res.json({
-      petsore_auth: "default-key",
-      basic_auth: { user: "user", pass: "pass" },
-    });
+app.post("/webhook", express.json({ type: "application/json" }), (req, res) => {
+  const signature = req.headers["readme-signature"];
+  // console.log(signature);
+  try {
+    readme.verifyWebhook(req.body, signature, process.env.SECRET);
+  } catch (e) {
+    return res.status(401).json({ error: e.message });
   }
-);
+
+  return res.json({
+    petsore_auth: "default-key",
+    basic_auth: { user: "user", pass: "pass" },
+  });
+});
 
 const server = app.listen(port, "0.0.0.0", () => {
   console.log(
