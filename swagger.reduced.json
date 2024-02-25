@@ -1,0 +1,49 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Support for different security types",
+    "description": "https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#securitySchemeObject"
+  },
+  "servers": [
+    {
+      "url": "https://httpbin.org"
+    }
+  ],
+  "tags": [
+    {
+      "name": "API Key"
+    }
+  ],
+  "paths": {
+    "/anything/apiKey": {
+      "post": {
+        "summary": "Cookie",
+        "description": "`apiKey` auth will be supplied within an `api_key` cookie.",
+        "tags": [
+          "API Key"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKey_cookie": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey_cookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "api_key",
+        "description": "An API key that will be supplied in a named cookie. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-scheme-object"
+      }
+    }
+  }
+}
