@@ -13,6 +13,9 @@
   "tags": [
     {
       "name": "API Key"
+    },
+    {
+      "name": "HTTP"
     }
   ],
   "paths": {
@@ -20,9 +23,7 @@
       "post": {
         "summary": "Cookie",
         "description": "`apiKey` auth will be supplied within an `api_key` cookie.",
-        "tags": [
-          "API Key"
-        ],
+        "tags": ["API Key"],
         "responses": {
           "200": {
             "description": "OK"
@@ -31,6 +32,23 @@
         "security": [
           {
             "apiKey_cookie": []
+          }
+        ]
+      }
+    },
+    "/anything/basic": {
+      "post": {
+        "summary": "Basic",
+        "description": "Authentication credentials will be supplied within a `Basic` `Authorization` header.\n\nhttps://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample",
+        "tags": ["HTTP"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "basic": []
           }
         ]
       }
@@ -43,6 +61,11 @@
         "in": "cookie",
         "name": "api_key",
         "description": "An API key that will be supplied in a named cookie. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#security-scheme-object"
+      },
+      "basic": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Basic auth that takes a base64'd combination of `user:password`. https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#basic-authentication-sample"
       }
     }
   }
