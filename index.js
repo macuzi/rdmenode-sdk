@@ -42,9 +42,23 @@ app.post("/webhook", express.json({ type: "application/json" }), (req, res) => {
     return res.status(401).json({ error: e.message });
   }
 
+  const email = req.body.email;
+
+  const user = email.replace("lamberto", "").replace("readme.io", "");
+
   return res.json({
-    petsore_auth: "default-key",
-    basic_auth: { user: "user", pass: "pass" },
+    keys: [
+      {
+        apiKey: "12345",
+        user: `${user} 1`,
+        name: "My 1st Project",
+      },
+      {
+        apiKey: "678910",
+        user: `${user} 2`,
+        name: "My second project",
+      },
+    ],
   });
 });
 
